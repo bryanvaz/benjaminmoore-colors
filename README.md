@@ -1,10 +1,10 @@
-# README.md
+# bmcolors
 
-## Benjamin Moore Color Collections Scraper (bmcolors)
+A Benjamin Moore Color Parser 
 
-This Python program scrapes the Benjamin Moore website to get all available color collections, download the associated ASE files, and parse the ASE files to extract color data. The parsed color data is then saved to a workspace directory in both YAML and JSON formats.
+This Python program accesses the Benjamin Moore website to get all available color collections, download the associated ASE files, and parse the ASE files to extract color data. The parsed color data is then saved to a workspace directory in both YAML and JSON formats. From there, the color data can be used in other programs such as design and rendering tools that do not natively support ASE files.
 
-### Prerequisites
+## Prerequisites
 
 This program uses the `pipenv` tool for managing its dependencies. You will need to have `pipenv` installed on your system to run the program. If you don't have `pipenv` installed, you can install it using pip:
 
@@ -12,7 +12,7 @@ This program uses the `pipenv` tool for managing its dependencies. You will need
 pip install pipenv
 ```
 
-### Installation
+## Installation
 
 To install the dependencies of the program, navigate to the program directory and run:
 
@@ -22,7 +22,7 @@ pipenv install
 
 This command will create a virtual environment and install all the dependencies specified in the `Pipfile`.
 
-### Running the Program
+## Running the Program
 
 You can run the program using the following command:
 
@@ -34,7 +34,7 @@ This command will run the main function of the program.
 
 By default, the program will scrape the Benjamin Moore website, download the ASE files, and parse the ASE files to extract color data.
 
-### Command Line Arguments
+## Command Line Arguments
 
 The program supports the following command line arguments:
 
@@ -48,7 +48,7 @@ For example, to only parse the ASE files in the workspace, you would run:
 pipenv run bmcolors --parse
 ```
 
-### Output
+## Output
 
 The parsed color data is saved in the `workspace` directory in the root of the project directory. The color data is saved in two formats:
 
@@ -57,10 +57,10 @@ The parsed color data is saved in the `workspace` directory in the root of the p
 
 Each file contains a dictionary where the keys are the names of the color collections and the values are lists of color data.
 
-### Contributing
+## Contributing
 
 Contributions are welcome. Please fork the repository and submit a pull request with your changes.
 
-### License
+## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more information.
