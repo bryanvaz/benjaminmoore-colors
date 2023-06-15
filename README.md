@@ -64,3 +64,10 @@ Contributions are welcome. Please fork the repository and submit a pull request 
 ## License
 
 This project is licensed under the MIT License. See the `LICENSE` file for more information.
+
+## Acknowledgements
+
+Based on the work by:
+* Marcos A Ojeda - [nsfmc/swatch](https://github.com/nsfmc/swatch)
+* Alex Hughes -  [Ahuge/ase_parser](https://github.com/Ahuge/ase_parser)
+* Josh Duncan - [joshbduncan/swatcher](https://github.com/joshbduncan/swatcher)
