@@ -5,6 +5,8 @@ import urllib.parse
 import os
 import yaml
 import struct 
+import json
+from conversions import rgb_to_hex, rgb_float_to_int
 
 class BMColors:
 
@@ -14,6 +16,8 @@ class BMColors:
     default_collections_filename = "collections_data.yaml"
 
     default_output_filename_yaml = "benjaminmoore-colors.yaml"
+
+    default_output_filename_json = "benjaminmoore-colors.json"
 
     def __init__(self, options={}):
         # TODO: Fill in the comments for the constructor.
@@ -117,7 +121,10 @@ class BMColors:
             if file_name.endswith(".ase"):
                 self.parse_ase_file_by_name(file_name)
         
+        self.enrich_parsed_colors()
+
         self.save_parsed_colors_to_yaml_workspace()
+        self.save_parsed_colors_to_json_workspace()
 
     def parse_ase_file_by_name(self, file_name):
         """
@@ -286,19 +293,45 @@ class BMColors:
 
         output_filepath = os.path.join(self.workspace_dir, self.default_output_filename_yaml)
 
-        print(f"Saving parsed colors to '{output_filepath}'")
+        print(f"Saving parsed colors to '{output_filepath}' ... ", end='')
         with open(output_filepath, "w") as f:
             yaml.dump(self.parsed_colors, f)
 
-        print(f"Saved parsed colors to '{output_filepath}'")
+        print(f"Saved.")
     
-    
+    def save_parsed_colors_to_json_workspace(self):
+        """
+        Writes the parsed colors to the workspace.
+        """
+        # prepare the workspace
+        self._prepare_workspace()
+
+        output_filepath = os.path.join(self.workspace_dir, self.default_output_filename_json)
+
+        print(f"Saving parsed colors to '{output_filepath}' ... ", end='')
+        with open(output_filepath, "w") as f:
+            json.dump(self.parsed_colors, f)
+
+        print(f"Saved.")
+
+    def enrich_parsed_colors(self):
+        """
+        Enriches the parsed colors with additional data.
+        """
+        for collection_name, collection_data in self.parsed_colors.items():
+            for color in collection_data:
+                if color['data']['mode'] != 'RGB':
+                    continue
+                rgb = color['data']['values']
+                color['data']['rgb'] = rgb_float_to_int(rgb)
+                color['data']['hex'] = rgb_to_hex(color['data']['rgb'])
+
 def main():
     parser = argparse.ArgumentParser(description='Scrape, download and parse all ase files for Benjamin Moore color collections.')
     parser.add_argument('--scrape', action='store_true', help='Scrape the Benjamin Moore website to get all available color collections.')
     # parser.add_argument('--download', help='Download all ase files for a given color collection.')
-    parser.add_argument('--parse', help='Parse all ase files and save to workspace.')
-    parser.add_argument('--all', help='Parse all ase files and save to workspace.')
+    parser.add_argument('--parse', action='store_true', help='Parse all ase files and save to workspace. (no download)')
+    parser.add_argument('--all', action='store_true', help='Scrape and Parse all ase files and save to workspace.')
     args = parser.parse_args()
 
     bm_colors = BMColors()
@@ -312,10 +345,10 @@ def main():
         bm_colors.scrape_collections()
         bm_colors.download_ase_files()
         bm_colors.parse_all_ase_files_in_workspace()
-    elif args.help:
-        parser.print_help()
     else:
-        parser.print_help()
+        bm_colors.scrape_collections()
+        bm_colors.download_ase_files()
+        bm_colors.parse_all_ase_files_in_workspace()
 
 if __name__ == '__main__':
     main()
